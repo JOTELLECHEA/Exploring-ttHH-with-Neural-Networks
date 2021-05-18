@@ -18,7 +18,7 @@ import tkinter as tk
 import matplotlib
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_pdf import PdfPages
-matplotlib.use("PDF")
+matplotlib.use("TkAgg")
 import math
 import time
 from math import log, sqrt
@@ -29,8 +29,6 @@ from tensorflow.keras.layers import Dense, Dropout, Activation
 from tensorflow.keras.callbacks import EarlyStopping, ModelCheckpoint
 from sklearn.model_selection import train_test_split
 from sklearn.utils import shuffle
-# from sklearn.preprocessing import StandardScaler
-# sc = StandardScaler()
 
 status = len(tf.config.experimental.list_physical_devices("GPU"))
 
@@ -46,12 +44,14 @@ from sklearn.metrics import (
 from sklearn.metrics import confusion_matrix
 from datetime import datetime
 import slug  # Library with common functions used in multiple scripts.
-# import joblib
+
 # Fixed values.
 tree = "OutputTree"
 seed = 42
 
-branches = slug.dataCol(phase=3)
+phase = 3
+
+branches = slug.dataCol(phase)
 # Number of features.
 numBranches = len(branches) - 2
 
@@ -78,8 +78,7 @@ rawdata = pd.concat([df_signal, shuffleBackground])
 
 X = rawdata.drop(["weights", "truth"], axis=1)
 
-# # Normalized the data with a Gaussian distrubuition with 0 mean and unit variance.
-# X = sc.fit_transform(X)
+X = slug.scaleData(X,phase)
 
 # Signal
 scalefactor = 0.00232 * 0.608791
@@ -99,7 +98,6 @@ X_train, X_test, y_train, y_test = train_test_split(
     X_dev, y_dev, test_size=0.2, random_state=seed, stratify=y_dev
 )
 
-
 def main(LAYER, BATCH, RATE):
     """
     NN structure ex. [5,5,5,5,1] 4 layers with 5 neurons each and one output layer. LAYER value is
@@ -109,7 +107,7 @@ def main(LAYER, BATCH, RATE):
     is half of the neurons being randomly turned off.
     """
     network = []
-    numEpochs = 5#150  # Number of times the NN gets trained.
+    numEpochs = 150  # Number of times the NN gets trained.
     batchSize = BATCH
     numLayers = LAYER
     neurons = numBranches
@@ -273,7 +271,7 @@ def main(LAYER, BATCH, RATE):
     plt.yscale("log")
     plt.legend(loc="upper right")
     plt.subplot(211)
-    plt.plot(fpr, tpr, "r-", label="ROC (area = %0.6f)" % (aucroc))
+    plt.plot(fpr, tpr, "k-", label="All, AUC = %0.3f" % (aucroc))
     plt.plot([0, 1], [0, 1], "--", color=(0.6, 0.6, 0.6), label="Luck")
     plt.xlim([-0.05, 1.05])
     plt.ylim([-0.05, 1.05])
@@ -363,7 +361,7 @@ def main(LAYER, BATCH, RATE):
     maxb = "%10d" % (maxb)
     # cm = confusion_matrix(y_test, y_predicted_round)
     tn, fp, fn, tp = confusion_matrix(y_test, y_predicted_round,normalize='all').ravel()
-    CM = [tp, fp,fn,tn]
+    CM = '[{0:0.2f}, {1:0.2f}, {2:0.2f}, {3:0.2f}]'.format(tp,fp,fn,tn)
     modelParam = [
         "FileName",
         "ConfusionMatrix [TP FP] [FN TN]",
