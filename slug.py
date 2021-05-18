@@ -28,23 +28,25 @@ HighLevel = [
     "cent",
     "m_bb",
     "h_b",
-    "mt1",
-    "mt2",
-    "mt3",
+    # "mt1",
+    # "mt2",
+    # "mt3",
+    'met',
+    'metPhi',
     "dr1",
     "dr2",
     "dr3",
 ]
 
 ### Low Level START -
-types = ["flav", "pT", "eta", "phi", "b", "c"]
+types = ["flav", "pT", "eta", "phi", "btag"]
 LeptonVAR = []
 JetVAR = []
 for i in range(4):
     for j in range(3):
         LeptonVAR.append("lepton" + str(j + 1) + types[i])
-for i in range(1, 6):
-    for j in range(10):
+for i in range(1, 5):
+    for j in range(9):
         JetVAR.append("jet" + str(j + 1) + types[i])
 ###                                               -END
 def dataCol(phase):
