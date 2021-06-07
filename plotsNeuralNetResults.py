@@ -11,7 +11,7 @@ import matplotlib.pyplot as plt
 
 # modelParam  = ['NN Archi.','#Br.','LR','Batch','AUC','Avg.P','Y/M/D @ H:M','ConfusionMatrix [TP FP] [FN TN]','Score','Max Signif','nsig','nbkg']
 # modelParam  = ['NN Archi.','#Br.','LR','Batch','AUC','Avg.P','Run Time','ConfusionMatrix [TP FP] [FN TN]','Score','Max Signif','nsig','nbkg']
-file = 'csv/testelep2.csv'
+file = 'csv/nnplots.csv'
 modelParam = [
         'FileName',
         "ConfusionMatrix [TP FP] [FN TN]",
@@ -135,7 +135,7 @@ data = pd.read_csv(file)
 # plt.legend(loc = 'lower right')
 # plt.show()
 # index = len(data)
-index = 100
+# index = 57
 # x = []
 # for i in range(7):
 #     x.append(i+3)
@@ -145,10 +145,10 @@ index = 100
 #     x.append(i+3) 
 # x = np.array(x)
 x = range(1,20)
-auc  = data['AUC'][index:]
-maxs = data['Max Signif'][index:]
-avgp = data['Avg.P'][index:]
-score = data['Score'][index:]
+auc  = data['AUC']
+maxs = data['Max Signif']
+avgp = data['Avg.P']
+score = data['Score']
 runtime = []
 # for i in range(0,index):
 #     hh = int(data['Run Time'][:index][i][7:9])
@@ -177,10 +177,10 @@ plt.plot(x,avgp[19:38],'b-', label = 'low lvl')
 plt.plot(x,avgp[38:],'r-', label = 'high lvl')
 # plt.plot(x,avgp,'r-', label = 'Avg Precision')
 plt.xticks(np.arange(1, 20, 1))
-# plt.ylim(0.7,.8)
+plt.ylim(0.4,1)
 # ax1.set_ylim(0.7,1)
 # plt.plot(x,score,'y.', label = 'Score')
-# plt.xlabel('Length of Neural Network')
+plt.xlabel('Length of Neural Network')
 # plt.title('Metrics vs. Number of Layers')
 plt.legend(loc = 'lower right')
 plt.grid()
@@ -194,10 +194,10 @@ plt.plot(x,maxs[:19],'k-', label = 'All')
 plt.plot(x,maxs[19:38],'b-', label = 'low lvl')
 plt.plot(x,maxs[38:],'r-', label = 'high lvl')
 plt.xticks(np.arange(1, 20, 1))
-# plt.ylim(2.1,2.4)
+plt.ylim(0,6)
 # plt.plot(x,avgp,'r.', label = 'Avg Precision')
 # # plt.plot(x,score,'y.', label = 'Score')
-# plt.xlabel('Length of Neural Network')
+plt.xlabel('Length of Neural Network')
 # plt.title('Metrics vs. Number of Layers')
 plt.legend(loc = 'lower right')
 plt.grid()
@@ -220,7 +220,7 @@ plt.plot(x,auc[:19],'k-', label = 'All')
 plt.plot(x,auc[19:38],'b-', label = 'low lvl')
 plt.plot(x,auc[38:],'r-', label = 'high lvl')
 plt.xticks(np.arange(1, 20, 1))
-# plt.ylim(0.9,.94)
+plt.ylim(0.4,1)
 # plt.plot(x,maxs,'g-', label = 'Max Signif')
 # plt.plot(x,avgp,'r.', label = 'Avg Precision')
 # plt.plot(x,score,'y.', label = 'Score')
