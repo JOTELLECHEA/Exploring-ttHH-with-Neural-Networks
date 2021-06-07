@@ -13,6 +13,7 @@ from numpy import array
 
 np.set_printoptions(threshold=sys.maxsize)
 import shap
+import argparse
 import tensorflow as tf
 import tkinter as tk
 import matplotlib
@@ -45,13 +46,18 @@ from sklearn.metrics import confusion_matrix
 from datetime import datetime
 import slug  # Library with common functions used in multiple scripts.
 
+parser = argparse.ArgumentParser(description="number of jets")
+parser.add_argument("--num", type=str, help="Use '--num=' followed by a Number of jets")
+args = parser.parse_args()
+numofjets = int(args.num)
+
 # Fixed values.
 tree = "OutputTree"
 seed = 42
 
 phase = 3
 
-branches = slug.dataCol(phase)
+branches = slug.dataCol(phase,numofjets)
 # Number of features.
 numBranches = len(branches) - 2
 
@@ -391,8 +397,11 @@ def main(LAYER, BATCH, RATE):
         ),
         columns=modelParam,
     )
-    df.to_csv("csv/testelep2.csv", mode="a", header=False, index=False)
+    # df.to_csv("csv/testelep2.csv", mode="a", header=False, index=False)
+    df.to_csv("csv/0_10_jets.csv", mode="a", header=False, index=False)
     print(df.to_string(justify="left", columns=modelParam, header=True, index=False))
     print("Saving model.....")
     model.save(modelName)  # Save Model as a HDF5 filein Data folder
     print("Model Saved")
+
+main(5,512,0.01)
