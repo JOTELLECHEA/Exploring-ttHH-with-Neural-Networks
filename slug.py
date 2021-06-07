@@ -35,28 +35,32 @@ HighLevel = [
     'metPhi',
     "dr1",
     "dr2",
-    "dr3",
+    # "dr3",
 ]
 
-### Low Level START -
-types = ["flav", "pT", "eta", "phi", "btag"]
-LeptonVAR = []
-JetVAR = []
-for i in range(4):
-    for j in range(3):
-        LeptonVAR.append("lepton" + str(j + 1) + types[i])
-for i in range(1, 5):
-    for j in range(9):
-        JetVAR.append("jet" + str(j + 1) + types[i])
-###                                               -END
-def dataCol(phase):
+def dataCol(phase,numberofjets):
     # Auto select feature set.
+    ### Low Level START -
+    types = ["flav", "pT", "eta", "phi", "btag"]
+    LeptonVAR = []
+    JetVAR = []
+    for i in range(4):
+        for j in range(2):
+            LeptonVAR.append("lepton" + str(j + 1) + types[i])
+    for i in range(1, 5):
+        for j in range(numberofjets):
+            JetVAR.append("jet" + str(j + 1) + types[i])
+    ###                                               -END
     if phase == 1:
         branches = sorted(HighLevel) + ["weights", "truth"]
     elif phase == 2:
         branches = sorted(LeptonVAR + JetVAR) + ["weights", "truth"]
     elif phase == 3:
-        branches = sorted(HighLevel + JetVAR + LeptonVAR) + ["weights", "truth"]
+        if numberofjets == 0:
+            branches = sorted(HighLevel + LeptonVAR) + ["weights", "truth"]
+        elif numberofjets > 0:
+            branches = sorted(HighLevel + JetVAR + LeptonVAR) + ["weights", "truth"]
+
     return branches
 
 def scaleData(data,phase):
