@@ -22,7 +22,10 @@ import argparse
 # modelParam  = ['NN Archi.','#Br.','LR','Batch','AUC','Avg.P','Y/M/D @ H:M','ConfusionMatrix [TP FP] [FN TN]','Score','Max Signif','nsig','nbkg']
 # modelParam  = ['NN Archi.','#Br.','LR','Batch','AUC','Avg.P','Run Time','ConfusionMatrix [TP FP] [FN TN]','Score','Max Signif','nsig','nbkg']#######
 
-file = 'csv/jet.csv'
+# file = 'csv/0_10_jets.csv'
+# file = 'csv/jet.csv'
+# file = 'csv/tenlayers.csv'
+file = 'csv/highlevelvariables.csv'
 modelParam = [
         'FileName',
         "ConfusionMatrix [TP FP] [FN TN]",
