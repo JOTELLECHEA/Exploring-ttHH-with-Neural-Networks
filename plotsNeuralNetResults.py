@@ -11,7 +11,7 @@ import matplotlib.pyplot as plt
 
 # modelParam  = ['NN Archi.','#Br.','LR','Batch','AUC','Avg.P','Y/M/D @ H:M','ConfusionMatrix [TP FP] [FN TN]','Score','Max Signif','nsig','nbkg']
 # modelParam  = ['NN Archi.','#Br.','LR','Batch','AUC','Avg.P','Run Time','ConfusionMatrix [TP FP] [FN TN]','Score','Max Signif','nsig','nbkg']
-file = 'csv/nnplots.csv'
+file = 'csv/tenlayers.csv'
 modelParam = [
         'FileName',
         "ConfusionMatrix [TP FP] [FN TN]",
@@ -144,7 +144,7 @@ data = pd.read_csv(file)
 #     x.append(i+3)
 #     x.append(i+3) 
 # x = np.array(x)
-x = range(1,20)
+x = range(1,10)
 auc  = data['AUC']
 maxs = data['Max Signif']
 avgp = data['Avg.P']
@@ -172,11 +172,11 @@ fig1 = plt.figure(1)
 # plt.plot(x,auc,'b.', label = 'AUC')
 # plt.plot(x,maxs,'g-', label = 'Max Signif')
 plt.title('Avg Precision')
-plt.plot(x,avgp[:19],'k-', label = 'All')
-plt.plot(x,avgp[19:38],'b-', label = 'low lvl')
-plt.plot(x,avgp[38:],'r-', label = 'high lvl')
+plt.plot(x,avgp[:9],'k-', label = 'All')
+# plt.plot(x,avgp[19:38],'b-', label = 'low lvl')
+plt.plot(x,avgp[9:],'r-', label = 'high lvl')
 # plt.plot(x,avgp,'r-', label = 'Avg Precision')
-plt.xticks(np.arange(1, 20, 1))
+plt.xticks(np.arange(1, 10, 1))
 plt.ylim(0.4,1)
 # ax1.set_ylim(0.7,1)
 # plt.plot(x,score,'y.', label = 'Score')
@@ -190,10 +190,10 @@ fig2 = plt.figure(2)
 # ax2 = fig1.add_subplot(2, 2, 2)
 # plt.plot(x,auc,'b.', label = 'AUC')
 plt.title('Max Signif')
-plt.plot(x,maxs[:19],'k-', label = 'All')
-plt.plot(x,maxs[19:38],'b-', label = 'low lvl')
-plt.plot(x,maxs[38:],'r-', label = 'high lvl')
-plt.xticks(np.arange(1, 20, 1))
+plt.plot(x,maxs[:9],'k-', label = 'All')
+# plt.plot(x,maxs[19:38],'b-', label = 'low lvl')
+plt.plot(x,maxs[9:],'r-', label = 'high lvl')
+plt.xticks(np.arange(1, 10, 1))
 plt.ylim(0,6)
 # plt.plot(x,avgp,'r.', label = 'Avg Precision')
 # # plt.plot(x,score,'y.', label = 'Score')
@@ -216,10 +216,10 @@ plt.grid()
 fig3 = plt.figure(3)
 # ax3 = fig1.add_subplot(2, 2, 3)
 plt.title('AUC')
-plt.plot(x,auc[:19],'k-', label = 'All')
-plt.plot(x,auc[19:38],'b-', label = 'low lvl')
-plt.plot(x,auc[38:],'r-', label = 'high lvl')
-plt.xticks(np.arange(1, 20, 1))
+plt.plot(x,auc[:9],'k-', label = 'All')
+# plt.plot(x,auc[19:38],'b-', label = 'low lvl')
+plt.plot(x,auc[9:],'r-', label = 'high lvl')
+plt.xticks(np.arange(1, 10, 1))
 plt.ylim(0.4,1)
 # plt.plot(x,maxs,'g-', label = 'Max Signif')
 # plt.plot(x,avgp,'r.', label = 'Avg Precision')
