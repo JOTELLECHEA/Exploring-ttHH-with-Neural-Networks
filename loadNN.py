@@ -31,7 +31,7 @@ phase = 3
 
 
 
-branches = slug.dataCol(phase)
+branches = slug.dataCol(phase,10)
 numBranches = len(branches)
 
 parser = argparse.ArgumentParser(description="Plot 1D plots of sig/bac")
