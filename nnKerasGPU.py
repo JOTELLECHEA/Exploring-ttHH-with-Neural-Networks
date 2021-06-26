@@ -49,7 +49,8 @@ import slug  # Library with common functions used in multiple scripts.
 parser = argparse.ArgumentParser(description="number of jets")
 parser.add_argument("--num", type=str, help="Use '--num=' followed by a Number of jets")
 args = parser.parse_args()
-numofjets = int(args.num)
+# numofjets = int(args.num)
+numofjets = 10
 
 # Fixed values.
 tree = "OutputTree"
@@ -58,6 +59,18 @@ seed = 42
 phase = 3
 
 branches = slug.dataCol(phase,numofjets)
+
+# HL0
+# branches = ['btag', 'cent', 'dr1', 'dr2', 'dr3', 'h_b', 'm_bb','numjet', 'numlep', 'srap', 'mt1', 'mt2', 'mt3','weights','truth']
+# HL1
+# branches = ['btag', 'cent', 'dr1', 'dr2', 'dr3', 'h_b', 'm_bb','numjet', 'numlep', 'srap', 'met', 'metPhi','weights','truth']
+# HL1.1
+# branches = ['btag', 'cent', 'dr1', 'dr2', 'dr3', 'h_b', 'm_bb','numjet', 'numlep', 'srap', 'met','weights','truth']
+# HL2
+# branches = ['btag', 'cent', 'dr1', 'dr2', 'h_b', 'm_bb','numjet', 'numlep', 'srap', 'met', 'metPhi','weights','truth']
+# HL2.1
+# branches = ['btag', 'cent', 'dr1', 'dr2', 'h_b', 'm_bb','numjet', 'numlep', 'srap', 'met','weights','truth']
+
 # Number of features.
 numBranches = len(branches) - 2
 
@@ -85,6 +98,7 @@ rawdata = pd.concat([df_signal, shuffleBackground])
 X = rawdata.drop(["weights", "truth"], axis=1)
 
 X = slug.scaleData(X,phase)
+
 
 # Signal
 scalefactor = 0.00232 * 0.608791
@@ -272,20 +286,20 @@ def main(LAYER, BATCH, RATE):
     aucroc = auc(fpr, tpr)
     precision, recall, thresRecall = precision_recall_curve(y_test, y_predicted)
 
-    plt.xlabel("Score")
-    plt.ylabel("Distribution")
-    plt.yscale("log")
-    plt.legend(loc="upper right")
-    plt.subplot(211)
-    plt.plot(fpr, tpr, "k-", label="All, AUC = %0.3f" % (aucroc))
-    plt.plot([0, 1], [0, 1], "--", color=(0.6, 0.6, 0.6), label="Luck")
-    plt.xlim([-0.05, 1.05])
-    plt.ylim([-0.05, 1.05])
-    plt.xlabel("False Positive Rate")
-    plt.ylabel("True Positive Rate")
-    plt.title("Receiver operating characteristic")
-    plt.legend(loc="lower right")
-    plt.grid()
+    # plt.xlabel("Score")
+    # plt.ylabel("Distribution")
+    # plt.yscale("log")
+    # plt.legend(loc="upper right")
+    # plt.subplot(211)
+    # plt.plot(fpr, tpr, "k-", label="All, AUC = %0.3f" % (aucroc))
+    # plt.plot([0, 1], [0, 1], "--", color=(0.6, 0.6, 0.6), label="Luck")
+    # plt.xlim([-0.05, 1.05])
+    # plt.ylim([-0.05, 1.05])
+    # plt.xlabel("False Positive Rate")
+    # plt.ylabel("True Positive Rate")
+    # plt.title("Receiver operating characteristic")
+    # plt.legend(loc="lower right")
+    # plt.grid()
 
 
     # AUC
@@ -310,7 +324,7 @@ def main(LAYER, BATCH, RATE):
         )
 
     # computes max signif
-    numbins = 100000
+    numbins = 1000000
     allScore = model.predict(X)
     sigScore = model.predict(X[y > 0.5]).ravel()
     bkgScore = model.predict(X[y < 0.5]).ravel()
@@ -398,10 +412,10 @@ def main(LAYER, BATCH, RATE):
         columns=modelParam,
     )
     # df.to_csv("csv/testelep2.csv", mode="a", header=False, index=False)
-    df.to_csv("csv/0_10_jets.csv", mode="a", header=False, index=False)
+    df.to_csv("csv/highlevelvariables.csv", mode="a", header=False, index=False)
     print(df.to_string(justify="left", columns=modelParam, header=True, index=False))
     print("Saving model.....")
     model.save(modelName)  # Save Model as a HDF5 filein Data folder
     print("Model Saved")
 
-main(5,512,0.01)
+main(5,int(len(X)),0.5)
