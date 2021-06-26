@@ -12,8 +12,8 @@ batch = 512*2
 # i = 5
 
 # This runs nnKerasGPU.py multiple times. A for loop can be used to varry the parameters. 
-for i in range(1,4):
-	nn.main(i,batch,0.01)
+for i in range(1,10):
+	nn.main(i,512,0.01)
 
 # nn.main(i,batch,0.4)
 # nn.main(i,batch,0.35)
