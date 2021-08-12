@@ -38,8 +38,17 @@ HighLevel = [
 ]
 
 def dataCol(phase,numberofjets):
-    # Auto select feature set.
-    ### Low Level START -
+    ''' 
+    List of names of features. 
+
+    Three Phases : 
+    1. High Level Variables only.
+    2. Lepton and Jet Variables only.
+    3. 1 AND 2. 
+    
+    The number of jets range from 0 to 21.
+
+    '''
     types = ["flav", "pT", "eta", "phi", "btag"]
     LeptonVAR = []
     JetVAR = []
@@ -49,7 +58,6 @@ def dataCol(phase,numberofjets):
     for i in range(1, 5):
         for j in range(numberofjets):
             JetVAR.append("jet" + str(j + 1) + types[i])
-    ###                                               -END
     if phase == 1:
         branches = sorted(HighLevel) + ["weights", "truth"]
     elif phase == 2:
