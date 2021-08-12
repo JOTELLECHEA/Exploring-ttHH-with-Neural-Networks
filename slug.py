@@ -74,7 +74,7 @@ def scaleData(data,phase):
     '''
     Scales data to have 0 mean with a variance of unity.
     
-    returns data scaled and saves stats as pxl to unscale data.
+    Returns data scaled and saves stats as pxl to unscale data.
 
     '''
     scaler = StandardScaler()
@@ -85,6 +85,12 @@ def scaleData(data,phase):
     return sData
 
 def loadScaledData(data,phase):
+    '''
+    UnScales data.
+    
+    Returns data and loads stats from pxl file.
+
+    '''
     scaler = joblib.load('phase' + str(phase) + '-Scaler.pxl')
     sData = scaler.transform(data)
     print('Loaded scaler and transformed data')
