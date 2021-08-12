@@ -71,6 +71,12 @@ def dataCol(phase,numberofjets):
     return branches
 
 def scaleData(data,phase):
+    '''
+    Scales data to have 0 mean with a variance of unity.
+    
+    returns data scaled and saves stats as pxl to unscale data.
+
+    '''
     scaler = StandardScaler()
     scaler.fit(data)
     sData = scaler.transform(data)
