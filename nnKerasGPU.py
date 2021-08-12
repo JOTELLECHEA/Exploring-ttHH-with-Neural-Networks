@@ -15,11 +15,12 @@ np.set_printoptions(threshold=sys.maxsize)
 import shap
 import argparse
 import tensorflow as tf
-import tkinter as tk
+import tkinter
 import matplotlib
+# matplotlib.use("TkAgg")
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_pdf import PdfPages
-matplotlib.use("TkAgg")
+
 import math
 import time
 from math import log, sqrt
@@ -56,35 +57,26 @@ numofjets = 10
 tree = "OutputTree"
 seed = 42
 
-phase = 3
+phase = 1
 
 branches = slug.dataCol(phase,numofjets)
-
-# HL0
-# branches = ['btag', 'cent', 'dr1', 'dr2', 'dr3', 'h_b', 'm_bb','numjet', 'numlep', 'srap', 'mt1', 'mt2', 'mt3','weights','truth']
-# HL1
-# branches = ['btag', 'cent', 'dr1', 'dr2', 'dr3', 'h_b', 'm_bb','numjet', 'numlep', 'srap', 'met', 'metPhi','weights','truth']
-# HL1.1
-# branches = ['btag', 'cent', 'dr1', 'dr2', 'dr3', 'h_b', 'm_bb','numjet', 'numlep', 'srap', 'met','weights','truth']
-# HL2
-# branches = ['btag', 'cent', 'dr1', 'dr2', 'h_b', 'm_bb','numjet', 'numlep', 'srap', 'met', 'metPhi','weights','truth']
-# HL2.1
-# branches = ['btag', 'cent', 'dr1', 'dr2', 'h_b', 'm_bb','numjet', 'numlep', 'srap', 'met','weights','truth']
 
 # Number of features.
 numBranches = len(branches) - 2
 
+mikeHancePATH = '/data/users/mhance/tthh/'
+jTellecheaPATH = '~/neural_networks/data/'
 # Data read from file.
-signal = uproot.open("data/new_TTHH.root")[tree]
+signal = uproot.open(jTellecheaPATH+"new_TTHH.root")[tree]
 df_signal = signal.pandas.df(branches)
 
-bkgTTBB = uproot.open("data/new_TTBB.root")[tree]
+bkgTTBB = uproot.open(jTellecheaPATH+"new_TTBB.root")[tree]
 df_bkgTTBB = bkgTTBB.pandas.df(branches)
 
-bkgTTH = uproot.open("data/new_TTH.root")[tree]
+bkgTTH = uproot.open(jTellecheaPATH+"new_TTH.root")[tree]
 df_bkgTTH = bkgTTH.pandas.df(branches)
 
-bkgTTZ = uproot.open("data/new_TTZ.root")[tree]
+bkgTTZ = uproot.open(jTellecheaPATH+"new_TTZ.root")[tree]
 df_bkgTTZ = bkgTTZ.pandas.df(branches)
 
 df_background = pd.concat([df_bkgTTBB, df_bkgTTH, df_bkgTTZ])
@@ -112,7 +104,7 @@ y = np.concatenate((np.ones(len(df_signal)), np.zeros(len(shuffleBackground))))
 
 # Shuffle full data and split into train/test and validation set.
 X_dev, X_eval, y_dev, y_eval = train_test_split(
-    X, y, test_size=0.001, random_state=seed, stratify=y
+    X, y, test_size=0.01, random_state=seed, stratify=y
 )
 X_train, X_test, y_train, y_test = train_test_split(
     X_dev, y_dev, test_size=0.2, random_state=seed, stratify=y_dev
@@ -127,7 +119,7 @@ def main(LAYER, BATCH, RATE):
     is half of the neurons being randomly turned off.
     """
     network = []
-    numEpochs = 150  # Number of times the NN gets trained.
+    numEpochs =  150  # Number of times the NN gets trained.
     batchSize = BATCH
     numLayers = LAYER
     neurons = numBranches
@@ -274,7 +266,22 @@ def main(LAYER, BATCH, RATE):
         verbose=1,
         callbacks=[earlyStopCallBack, checkPointsCallBack],
     )
-
+    plt.subplot(211)
+    plt.plot(kModel.history['precision'])
+    plt.plot(kModel.history['val_precision'])
+    plt.title('model precision')
+    plt.ylabel('precision')
+    plt.xlabel('epoch')
+    plt.legend(['train', 'val'], loc='upper left')
+    plt.savefig('precision.jpg')
+    plt.subplot(212)
+    plt.plot(kModel.history['loss'])
+    plt.plot(kModel.history['val_loss'])
+    plt.title('model loss')
+    plt.ylabel('loss')
+    plt.xlabel('epoch')
+    plt.legend(['train', 'val'], loc='upper left')
+    plt.savefig('loss.jpg')
     # This is the predicted score. Values range between [0,1]
     y_predicted = model.predict(X_test)
 
@@ -412,10 +419,10 @@ def main(LAYER, BATCH, RATE):
         columns=modelParam,
     )
     # df.to_csv("csv/testelep2.csv", mode="a", header=False, index=False)
-    df.to_csv("csv/highlevelvariables.csv", mode="a", header=False, index=False)
+    # df.to_csv("csv/highlevelvariables.csv", mode="a", header=False, index=False)
+    df.to_csv("csv/aug.csv", mode="a", header=False, index=False)
     print(df.to_string(justify="left", columns=modelParam, header=True, index=False))
     print("Saving model.....")
     model.save(modelName)  # Save Model as a HDF5 filein Data folder
     print("Model Saved")
-
-main(5,int(len(X)),0.5)
+main(5,512,0)
