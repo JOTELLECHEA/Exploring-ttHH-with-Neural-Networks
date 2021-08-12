@@ -18,7 +18,7 @@ import joblib
 tree = "OutputTree"
 seed = 42
 
-# Branches names of high/low level variables aka: features.
+# These are the names of the High level features that are stored as branches in the ROOT files.
 HighLevel = [
     "numjet",
     "numlep",
