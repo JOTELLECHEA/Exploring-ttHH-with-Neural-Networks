@@ -25,7 +25,8 @@ import argparse
 # file = 'csv/0_10_jets.csv'
 # file = 'csv/jet.csv'
 # file = 'csv/tenlayers.csv'
-file = 'csv/highlevelvariables.csv'
+# file = 'csv/highlevelvariables.csv'
+file = 'csv/aug.csv'
 modelParam = [
         'FileName',
         "ConfusionMatrix [TP FP] [FN TN]",
