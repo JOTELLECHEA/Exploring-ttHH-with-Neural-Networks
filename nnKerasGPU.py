@@ -65,7 +65,8 @@ branches = slug.dataCol(phase,numofjets)
 numBranches = len(branches) - 2
 
 mikeHancePATH = '/data/users/mhance/tthh/'
-jTellecheaPATH = '~/neural_networks/data/'
+jTellecheaPATH = '~/neural_networks/data/flat_btageff_0.77/'
+# jTellecheaPATH = '~/neural_networks/data/flat_btageff_0.85/'
 # Data read from file.
 signal = uproot.open(jTellecheaPATH+"new_TTHH.root")[tree]
 df_signal = signal.pandas.df(branches)
