@@ -1,4 +1,5 @@
-# neural_networks
+<img src="https://github.com/JOTELLECHEA/Exploring-ttHH-with-Neural-Networks/blob/master/Exploring_ttHH_with_Neural_Networks.png">
+
 Conduct research involving prospective di-Higgs production at the HL-LHC by using machine learning via Neural networks.\
 Advisor: Michael Hance.
 
