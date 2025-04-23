@@ -10,13 +10,13 @@ import os, time, sys, argparse, math
 import numpy as np
 from array import array
 import shutil
-import random
 import itertools
+import secrets
 
 seed = 42
-random.seed(seed)
+secrets.SystemRandom().seed(seed)
 import ROOT
-rand = random.random()
+rand = secrets.SystemRandom().random()
 
 
 def augment_rootfile(filepath):
